@@ -5,7 +5,7 @@ const API_URL = '/api';
 let currentSessionId = null;
 
 // DOM elements
-let chatMessages, chatInput, sendButton, totalCourses, courseTitles;
+let chatMessages, chatInput, sendButton, totalCourses, courseTitles, sidebarToggle, sidebar, themeToggle;
 
 // Initialize
 document.addEventListener('DOMContentLoaded', () => {
@@ -15,7 +15,16 @@ document.addEventListener('DOMContentLoaded', () => {
     sendButton = document.getElementById('sendButton');
     totalCourses = document.getElementById('totalCourses');
     courseTitles = document.getElementById('courseTitles');
-    
+    sidebarToggle = document.getElementById('sidebarToggle');
+    sidebar = document.getElementById('sidebar');
+    themeToggle = document.getElementById('themeToggle');
+
+    // Restore saved theme before first paint
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    }
+
     setupEventListeners();
     createNewSession();
     loadCourseStats();
@@ -30,6 +39,21 @@ function setupEventListeners() {
     });
     
     
+    // Theme toggle
+    themeToggle.addEventListener('click', () => {
+        const current = document.documentElement.getAttribute('data-theme');
+        const next = current === 'light' ? 'dark' : 'light';
+        document.documentElement.setAttribute('data-theme', next);
+        localStorage.setItem('theme', next);
+    });
+
+    // Sidebar toggle
+    sidebarToggle.addEventListener('click', () => {
+        const isExpanded = sidebarToggle.getAttribute('aria-expanded') === 'true';
+        sidebarToggle.setAttribute('aria-expanded', String(!isExpanded));
+        sidebar.classList.toggle('collapsed', isExpanded);
+    });
+
     // New chat button
     document.getElementById('newChatButton').addEventListener('click', async () => {
         if (currentSessionId) {
