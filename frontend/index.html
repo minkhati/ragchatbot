@@ -7,16 +7,21 @@
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
     <title>Course Materials Assistant</title>
-    <link rel="stylesheet" href="style.css?v=11">
+    <link rel="stylesheet" href="style.css?v=12">
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1>Course Materials Assistant</h1>
-            <p class="subtitle">Ask questions about courses, instructors, and content</p>
-        </header>
+        <!-- Navbar -->
+        <nav class="navbar">
+            <!-- Sidebar Toggle Button -->
+            <button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar" title="Toggle sidebar" aria-expanded="true">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
 
-        <div class="main-content">
+            <span class="navbar-title">Course Materials Assistant</span>
+
             <!-- Theme Toggle Button -->
             <button type="button" class="theme-toggle" id="themeToggle" aria-label="Toggle light/dark theme" title="Toggle theme">
                 <!-- Moon icon (shown in dark mode) -->
@@ -36,14 +41,9 @@
                     <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
                 </svg>
             </button>
+        </nav>
 
-            <!-- Sidebar Toggle Button -->
-            <button type="button" class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar" title="Toggle sidebar" aria-expanded="true">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-
+        <div class="main-content">
             <!-- Left Sidebar -->
             <aside class="sidebar" id="sidebar">
                 <!-- New Chat -->
@@ -108,6 +108,6 @@
 
 
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src="script.js?v=11"></script>
+    <script src="script.js?v=12"></script>
 </body>
 </html>

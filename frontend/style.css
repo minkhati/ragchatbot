@@ -71,6 +71,29 @@ header {
     display: none;
 }
 
+/* Navbar */
+.navbar {
+    display: flex;
+    align-items: center;
+    height: 52px;
+    padding: 0 1rem;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border-color);
+    flex-shrink: 0;
+    gap: 0.75rem;
+    z-index: 50;
+}
+
+.navbar-title {
+    flex: 1;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 header h1 {
     font-size: 1.75rem;
     font-weight: 700;
@@ -97,13 +120,9 @@ header h1 {
 
 /* Sidebar Toggle Button */
 .sidebar-toggle {
-    position: fixed;
-    top: 1rem;
-    left: 1rem;
-    z-index: 100;
     width: 36px;
     height: 36px;
-    background: var(--surface);
+    background: transparent;
     border: 1px solid var(--border-color);
     border-radius: 8px;
     cursor: pointer;
@@ -113,6 +132,7 @@ header h1 {
     justify-content: center;
     gap: 5px;
     padding: 6px;
+    flex-shrink: 0;
     transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
 }
 
@@ -156,13 +176,9 @@ header h1 {
 
 /* Theme Toggle Button */
 .theme-toggle {
-    position: fixed;
-    top: 1rem;
-    right: 1rem;
-    z-index: 100;
     width: 36px;
     height: 36px;
-    background: var(--surface);
+    background: transparent;
     border: 1px solid var(--border-color);
     border-radius: 8px;
     cursor: pointer;
@@ -170,6 +186,7 @@ header h1 {
     align-items: center;
     justify-content: center;
     padding: 6px;
+    flex-shrink: 0;
     transition: background 0.2s ease, border-color 0.2s ease;
     color: var(--text-secondary);
 }
@@ -208,7 +225,6 @@ header h1 {
     background: var(--surface);
     border-right: 1px solid var(--border-color);
     padding: 1.5rem;
-    padding-top: 4rem;
     overflow-y: auto;
     flex-shrink: 0;
     transition: width 0.3s ease, padding 0.3s ease, opacity 0.3s ease;
@@ -798,10 +814,8 @@ details[open] .suggested-header::before {
         flex-direction: column;
     }
 
-    .sidebar-toggle {
-        top: auto;
-        bottom: 5.5rem;
-        left: 0.75rem;
+    .navbar-title {
+        font-size: 0.875rem;
     }
 
     .sidebar {
