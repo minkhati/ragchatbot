@@ -1,4 +1,4 @@
-from typing import Dict, Any, Optional, Protocol
+from typing import Dict, Any, Optional
 from abc import ABC, abstractmethod
 from vector_store import VectorStore, SearchResults
 
@@ -110,6 +110,45 @@ class CourseSearchTool(Tool):
 
         self.last_sources = sources
         return "\n\n".join(formatted)
+
+class CourseOutlineTool(Tool):
+    """Tool for retrieving a course outline (title, link, and lesson list)"""
+
+    def __init__(self, vector_store: VectorStore):
+        self.store = vector_store
+
+    def get_tool_definition(self) -> Dict[str, Any]:
+        return {
+            "name": "get_course_outline",
+            "description": "Get the full outline of a course: its title, course link, and list of lessons with numbers and titles",
+            "input_schema": {
+                "type": "object",
+                "properties": {
+                    "course_name": {
+                        "type": "string",
+                        "description": "Course title to look up (partial matches work, e.g. 'MCP', 'Introduction')"
+                    }
+                },
+                "required": ["course_name"]
+            }
+        }
+
+    def execute(self, course_name: str) -> str:
+        outline = self.store.get_course_outline(course_name)
+        if not outline:
+            return f"No course found matching '{course_name}'."
+
+        lines = [
+            f"Course: {outline['title']}",
+            f"Link: {outline['course_link'] or 'N/A'}",
+            "",
+            "Lessons:"
+        ]
+        for lesson in outline.get("lessons", []):
+            lines.append(f"  Lesson {lesson['lesson_number']}: {lesson['lesson_title']}")
+
+        return "\n".join(lines)
+
 
 class ToolManager:
     """Manages available tools for the AI"""

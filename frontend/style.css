@@ -114,9 +114,9 @@ header h1 {
 .new-chat-btn {
     width: 100%;
     background: none;
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
-    padding: 0.5rem 0.75rem;
+    border: none;
+    border-radius: 0;
+    padding: 0.5rem 0;
     font-size: 0.875rem;
     font-weight: 600;
     color: var(--text-secondary);
@@ -124,12 +124,12 @@ header h1 {
     letter-spacing: 0.5px;
     cursor: pointer;
     text-align: left;
-    transition: color 0.2s, border-color 0.2s;
+    outline: none;
+    transition: color 0.2s ease;
 }
 
 .new-chat-btn:hover {
     color: var(--primary-color);
-    border-color: var(--primary-color);
 }
 
 /* Main Chat Area */
