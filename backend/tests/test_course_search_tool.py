@@ -1,14 +1,15 @@
 """
 Tests for CourseSearchTool.execute() — verifies outputs and VectorStore integration.
 """
+
 import pytest
 from unittest.mock import MagicMock
 
 from search_tools import CourseSearchTool
 from vector_store import SearchResults
 
-
 # ── helpers ──────────────────────────────────────────────────────────────────
+
 
 def _results(docs, metadata):
     return SearchResults(
@@ -19,6 +20,7 @@ def _results(docs, metadata):
 
 
 # ── fixtures ─────────────────────────────────────────────────────────────────
+
 
 @pytest.fixture
 def mock_store():
@@ -33,6 +35,7 @@ def tool(mock_store):
 
 
 # ── 1. happy-path output format ───────────────────────────────────────────────
+
 
 def test_execute_returns_course_and_lesson_header(tool, mock_store):
     mock_store.search.return_value = _results(
@@ -75,8 +78,11 @@ def test_execute_result_without_lesson_number(tool, mock_store):
 
 # ── 2. empty / no-match responses ────────────────────────────────────────────
 
+
 def test_execute_returns_no_content_found_when_empty(tool, mock_store):
-    mock_store.search.return_value = SearchResults(documents=[], metadata=[], distances=[])
+    mock_store.search.return_value = SearchResults(
+        documents=[], metadata=[], distances=[]
+    )
 
     result = tool.execute(query="unknown topic")
 
@@ -84,7 +90,9 @@ def test_execute_returns_no_content_found_when_empty(tool, mock_store):
 
 
 def test_execute_no_content_message_includes_course_filter(tool, mock_store):
-    mock_store.search.return_value = SearchResults(documents=[], metadata=[], distances=[])
+    mock_store.search.return_value = SearchResults(
+        documents=[], metadata=[], distances=[]
+    )
 
     result = tool.execute(query="something", course_name="MCP Course")
 
@@ -93,7 +101,9 @@ def test_execute_no_content_message_includes_course_filter(tool, mock_store):
 
 
 def test_execute_no_content_message_includes_lesson_filter(tool, mock_store):
-    mock_store.search.return_value = SearchResults(documents=[], metadata=[], distances=[])
+    mock_store.search.return_value = SearchResults(
+        documents=[], metadata=[], distances=[]
+    )
 
     result = tool.execute(query="something", lesson_number=3)
 
@@ -103,8 +113,11 @@ def test_execute_no_content_message_includes_lesson_filter(tool, mock_store):
 
 # ── 3. error propagation ──────────────────────────────────────────────────────
 
+
 def test_execute_returns_error_string_on_search_error(tool, mock_store):
-    mock_store.search.return_value = SearchResults.empty("Search error: index too small")
+    mock_store.search.return_value = SearchResults.empty(
+        "Search error: index too small"
+    )
 
     result = tool.execute(query="any query")
 
@@ -133,8 +146,11 @@ def test_execute_does_not_raise_when_store_raises(tool, mock_store):
 
 # ── 4. filter forwarding ──────────────────────────────────────────────────────
 
+
 def test_execute_forwards_query_only(tool, mock_store):
-    mock_store.search.return_value = SearchResults(documents=[], metadata=[], distances=[])
+    mock_store.search.return_value = SearchResults(
+        documents=[], metadata=[], distances=[]
+    )
 
     tool.execute(query="neural networks")
 
@@ -144,7 +160,9 @@ def test_execute_forwards_query_only(tool, mock_store):
 
 
 def test_execute_forwards_course_name_filter(tool, mock_store):
-    mock_store.search.return_value = SearchResults(documents=[], metadata=[], distances=[])
+    mock_store.search.return_value = SearchResults(
+        documents=[], metadata=[], distances=[]
+    )
 
     tool.execute(query="activation functions", course_name="Deep Learning")
 
@@ -154,7 +172,9 @@ def test_execute_forwards_course_name_filter(tool, mock_store):
 
 
 def test_execute_forwards_lesson_number_filter(tool, mock_store):
-    mock_store.search.return_value = SearchResults(documents=[], metadata=[], distances=[])
+    mock_store.search.return_value = SearchResults(
+        documents=[], metadata=[], distances=[]
+    )
 
     tool.execute(query="backpropagation", lesson_number=2)
 
@@ -164,6 +184,7 @@ def test_execute_forwards_lesson_number_filter(tool, mock_store):
 
 
 # ── 5. source tracking ────────────────────────────────────────────────────────
+
 
 def test_execute_populates_last_sources(tool, mock_store):
     mock_store.search.return_value = _results(
@@ -178,7 +199,9 @@ def test_execute_populates_last_sources(tool, mock_store):
 
 
 def test_execute_last_sources_empty_on_no_results(tool, mock_store):
-    mock_store.search.return_value = SearchResults(documents=[], metadata=[], distances=[])
+    mock_store.search.return_value = SearchResults(
+        documents=[], metadata=[], distances=[]
+    )
 
     tool.execute(query="nothing")
 

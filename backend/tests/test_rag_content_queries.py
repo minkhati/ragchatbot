@@ -3,6 +3,7 @@ Tests for how the RAG system handles content-query questions end-to-end.
 Exercises the full pipeline: RAGSystem.query → AIGenerator → ToolManager →
 CourseSearchTool → VectorStore.
 """
+
 import pytest
 from unittest.mock import MagicMock, patch
 
@@ -12,8 +13,8 @@ from ai_generator import AIGenerator
 from rag_system import RAGSystem
 from config import Config
 
-
 # ── helpers ───────────────────────────────────────────────────────────────────
+
 
 def _search_results(docs, metadata):
     return SearchResults(
@@ -55,6 +56,7 @@ def _text_response(text):
 
 # ── fixture: RAGSystem with mocked infrastructure ─────────────────────────────
 
+
 @pytest.fixture
 def rag(tmp_path):
     """
@@ -63,12 +65,16 @@ def rag(tmp_path):
     """
     cfg = Config(ANTHROPIC_API_KEY="test-key", CHROMA_PATH=str(tmp_path / "chroma"))
 
-    with patch("rag_system.VectorStore") as MockVS, \
-         patch("rag_system.DocumentProcessor"), \
-         patch("rag_system.SessionManager") as MockSM:
+    with (
+        patch("rag_system.VectorStore") as MockVS,
+        patch("rag_system.DocumentProcessor"),
+        patch("rag_system.SessionManager") as MockSM,
+    ):
 
         mock_vs = MockVS.return_value
-        mock_vs.search.return_value = SearchResults(documents=[], metadata=[], distances=[])
+        mock_vs.search.return_value = SearchResults(
+            documents=[], metadata=[], distances=[]
+        )
         mock_vs.get_lesson_link.return_value = None
 
         mock_sm = MockSM.return_value
@@ -89,6 +95,7 @@ def rag(tmp_path):
 
 # ── 1. search_course_content tool is registered ───────────────────────────────
 
+
 def test_search_course_content_tool_registered(rag):
     names = [t["name"] for t in rag.tool_manager.get_tool_definitions()]
     assert "search_course_content" in names
@@ -100,6 +107,7 @@ def test_get_course_outline_tool_registered(rag):
 
 
 # ── 2. content query triggers VectorStore via tool pipeline ───────────────────
+
 
 def test_content_query_reaches_vector_store(rag):
     """Full pipeline: RAGSystem.query → AI tool use → CourseSearchTool → VectorStore."""
@@ -143,6 +151,7 @@ def test_content_query_with_course_filter_reaches_vector_store(rag):
 
 # ── 3. search results flow back to Claude ─────────────────────────────────────
 
+
 def test_search_results_are_included_in_second_api_call(rag):
     rag._mock_vs.search.return_value = _search_results(
         docs=["MCP is a protocol for tools."],
@@ -160,8 +169,7 @@ def test_search_results_are_included_in_second_api_call(rag):
 
     # Find the tool-result message
     tool_msg = next(
-        m for m in messages
-        if m["role"] == "user" and isinstance(m["content"], list)
+        m for m in messages if m["role"] == "user" and isinstance(m["content"], list)
     )
     result_content = tool_msg["content"][0]["content"]
     assert "MCP Course" in result_content
@@ -169,6 +177,7 @@ def test_search_results_are_included_in_second_api_call(rag):
 
 
 # ── 4. RAG returns proper response (not 'query failed') ───────────────────────
+
 
 def test_rag_does_not_return_query_failed_on_content_question(rag):
     rag._mock_client.messages.create.side_effect = [
@@ -183,7 +192,9 @@ def test_rag_does_not_return_query_failed_on_content_question(rag):
 
 def test_rag_returns_response_when_search_empty(rag):
     """Claude should still answer even if search returns nothing."""
-    rag._mock_vs.search.return_value = SearchResults(documents=[], metadata=[], distances=[])
+    rag._mock_vs.search.return_value = SearchResults(
+        documents=[], metadata=[], distances=[]
+    )
     rag._mock_client.messages.create.side_effect = [
         _tool_use_response("search_course_content", {"query": "unknown topic"}),
         _text_response("I couldn't find relevant content."),
@@ -196,6 +207,7 @@ def test_rag_returns_response_when_search_empty(rag):
 
 
 # ── 5. unhandled VectorStore exception propagates (reveals missing error guard) ──
+
 
 def test_vector_store_exception_does_not_propagate(rag):
     """
@@ -214,6 +226,7 @@ def test_vector_store_exception_does_not_propagate(rag):
 
 
 # ── 6. vector store n_results > collection size triggers the search-error path ──
+
 
 def test_search_error_from_small_collection_is_handled(rag):
     """
@@ -237,12 +250,14 @@ def test_search_error_from_small_collection_is_handled(rag):
 
 # ── 7. config model name is a valid Claude 4 model ───────────────────────────
 
+
 def test_config_model_name_matches_known_claude4_format():
     """
     The configured model must be a valid Claude 4 model ID.
     An invalid model causes every API call to fail → all queries return 'query failed'.
     """
     from config import config
+
     valid_models = {
         "claude-opus-4-7",
         "claude-sonnet-4-6",

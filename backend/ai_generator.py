@@ -1,6 +1,7 @@
 import anthropic
 from typing import List, Optional, Dict, Any
 
+
 class AIGenerator:
     """Handles interactions with Anthropic's Claude API for generating responses"""
 
@@ -33,22 +34,21 @@ All responses must be:
 4. **Example-supported** - Include relevant examples when they aid understanding
 Provide only the direct answer to what was asked.
 """
-    
+
     def __init__(self, api_key: str, model: str):
         self.client = anthropic.Anthropic(api_key=api_key)
         self.model = model
-        
+
         # Pre-build base API parameters
-        self.base_params = {
-            "model": self.model,
-            "temperature": 0,
-            "max_tokens": 800
-        }
-    
-    def generate_response(self, query: str,
-                         conversation_history: Optional[str] = None,
-                         tools: Optional[List] = None,
-                         tool_manager=None) -> str:
+        self.base_params = {"model": self.model, "temperature": 0, "max_tokens": 800}
+
+    def generate_response(
+        self,
+        query: str,
+        conversation_history: Optional[str] = None,
+        tools: Optional[List] = None,
+        tool_manager=None,
+    ) -> str:
         system_content = (
             f"{self.SYSTEM_PROMPT}\n\nPrevious conversation:\n{conversation_history}"
             if conversation_history
@@ -69,12 +69,20 @@ Provide only the direct answer to what was asked.
         response = self.client.messages.create(**api_params)
 
         if response.stop_reason == "tool_use" and tool_manager:
-            return self._run_tool_loop(response, messages, system_content, tools, tool_manager)
+            return self._run_tool_loop(
+                response, messages, system_content, tools, tool_manager
+            )
 
         return response.content[0].text
 
-    def _run_tool_loop(self, first_response, messages: List, system_content: str,
-                       tools: List, tool_manager) -> str:
+    def _run_tool_loop(
+        self,
+        first_response,
+        messages: List,
+        system_content: str,
+        tools: List,
+        tool_manager,
+    ) -> str:
         current_response = first_response
 
         for round_num in range(1, self.MAX_TOOL_ROUNDS + 1):
@@ -86,7 +94,7 @@ Provide only the direct answer to what was asked.
 
             messages.append({"role": "user", "content": tool_results})
 
-            is_last_round = (round_num >= self.MAX_TOOL_ROUNDS)
+            is_last_round = round_num >= self.MAX_TOOL_ROUNDS
             next_params = {
                 **self.base_params,
                 "messages": messages,
@@ -113,9 +121,11 @@ Provide only the direct answer to what was asked.
                     content = tool_manager.execute_tool(block.name, **block.input)
                 except Exception as e:
                     content = f"Tool error: {e}"
-                results.append({
-                    "type": "tool_result",
-                    "tool_use_id": block.id,
-                    "content": content,
-                })
+                results.append(
+                    {
+                        "type": "tool_result",
+                        "tool_use_id": block.id,
+                        "content": content,
+                    }
+                )
         return results
