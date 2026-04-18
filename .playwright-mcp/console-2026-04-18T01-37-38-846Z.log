@@ -1,0 +1,24 @@
+[     109ms] [LOG] Loading course stats... @ http://127.0.0.1:8000/script.js?v=9:174
+[     115ms] [LOG] Course data received: {total_courses: 4, course_titles: Array(4)} @ http://127.0.0.1:8000/script.js?v=9:179
+[  642299ms] [LOG] Loading course stats... @ http://127.0.0.1:8000/script.js?v=9:174
+[  642305ms] [LOG] Course data received: {total_courses: 4, course_titles: Array(4)} @ http://127.0.0.1:8000/script.js?v=9:179
+[  644855ms] [LOG] Loading course stats... @ http://127.0.0.1:8000/script.js?v=9:174
+[  644857ms] [LOG] Course data received: {total_courses: 4, course_titles: Array(4)} @ http://127.0.0.1:8000/script.js?v=9:179
+[  648425ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:8000/api/query:0
+[  685465ms] [LOG] Loading course stats... @ http://127.0.0.1:8000/script.js?v=9:174
+[  685469ms] [LOG] Course data received: {total_courses: 4, course_titles: Array(4)} @ http://127.0.0.1:8000/script.js?v=9:179
+[  686934ms] [LOG] Loading course stats... @ http://127.0.0.1:8000/script.js?v=9:174
+[  686936ms] [LOG] Course data received: {total_courses: 4, course_titles: Array(4)} @ http://127.0.0.1:8000/script.js?v=9:179
+[  701919ms] [LOG] Loading course stats... @ http://127.0.0.1:8000/script.js?v=9:174
+[  701921ms] [LOG] Course data received: {total_courses: 4, course_titles: Array(4)} @ http://127.0.0.1:8000/script.js?v=9:179
+[  718534ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:8000/api/query:0
+[  779733ms] [LOG] Loading course stats... @ http://127.0.0.1:8000/script.js?v=9:174
+[  779736ms] [LOG] Course data received: {total_courses: 4, course_titles: Array(4)} @ http://127.0.0.1:8000/script.js?v=9:179
+[ 1269247ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:8000/api/query:0
+[ 1273290ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:8000/api/query:0
+[47878491ms] [LOG] Loading course stats... @ http://127.0.0.1:8000/script.js?v=9:174
+[47878529ms] [LOG] Course data received: {total_courses: 4, course_titles: Array(4)} @ http://127.0.0.1:8000/script.js?v=9:179
+[47879627ms] [LOG] Loading course stats... @ http://127.0.0.1:8000/script.js?v=9:174
+[47879631ms] [LOG] Course data received: {total_courses: 4, course_titles: Array(4)} @ http://127.0.0.1:8000/script.js?v=9:179
+[47880494ms] [LOG] Loading course stats... @ http://127.0.0.1:8000/script.js?v=9:174
+[47880496ms] [LOG] Course data received: {total_courses: 4, course_titles: Array(4)} @ http://127.0.0.1:8000/script.js?v=9:179

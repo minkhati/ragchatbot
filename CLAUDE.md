@@ -31,7 +31,7 @@ App runs at `http://localhost:8000`. API docs at `http://localhost:8000/docs`.
 
 ## Architecture
 
-This is a RAG chatbot with a FastAPI backend and plain HTML/JS/CSS frontend. The frontend is served as static files by FastAPI itself — there is no separate frontend build step.
+This is a RAG chatbot with a FastAPI backend and plain HTML/JS/CSS frontend. The frontend is served as static files by FastAPI itself — there is no separate frontend build step.`
 
 ### Request Flow
 
